@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Hona Tha Pyaar — Hua Mere Yaar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fff4ec;
+    --rose: #ff6b9d;
+    --rose2: #ffb3c6;
+    --gold: #ffd27f;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--cream);
+    overflow-x: hidden;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+    background: linear-gradient(160deg, #2e1040 0%, #521a52 50%, #6b2450 100%);
+    transition: background 2.2s ease;
+  }
+  body.scene-night  { background: linear-gradient(160deg, #120a2a 0%, #241448 55%, #3f1a5e 100%); }
+  body.scene-dusk   { background: linear-gradient(160deg, #2a1040 0%, #4a1a5e 50%, #6b2450 100%); }
+  body.scene-sunset { background: linear-gradient(160deg, #3d1030 0%, #5e1a45 45%, #7d2a52 100%); }
+  body.scene-starry { background: linear-gradient(160deg, #0d0626 0%, #1c1038 50%, #33185a 100%); }
+  body.scene-gold   { background: linear-gradient(160deg, #3d0f2e 0%, #5e1a3d 45%, #7d2f55 100%); }
+  body.scene-rose   { background: linear-gradient(160deg, #400f2a 0%, #661a45 45%, #8a2555 100%); }
+  body.scene-violet { background: linear-gradient(160deg, #1c0f3d 0%, #3a1a5e 50%, #5c2a7e 100%); }
+
+  .glow {
+    position: fixed; border-radius: 50%; filter: blur(120px);
+    opacity: .38; pointer-events: none; z-index: 0; transition: background 2.2s ease;
+  }
+  .glow.g1 { width: 430px; height: 430px; top: -130px; left: -110px; background: #ff2e7e; }
+  .glow.g2 { width: 400px; height: 400px; bottom: -120px; right: -110px; background: #a44cff; }
+  .glow.g3 { width: 300px; height: 300px; top: 42%; right: 14%; background: #ffb347; opacity: .22; }
+
+  #fx { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+
+  .top {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 6;
+    padding: 24px 28px 0;
+    display: flex; align-items: center; justify-content: space-between;
+    pointer-events: none;
+  }
+  .logo {
+    font-family: 'Great Vibes', cursive;
+    font-size: 30px; color: var(--rose2);
+    text-shadow: 0 0 20px rgba(255, 158, 199, .6);
+  }
+
+  .page {
+    position: fixed; inset: 0; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 80px 20px 170px;
+    opacity: 0; transform: scale(1.05);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+    pointer-events: none;
+  }
+  .page.active { opacity: 1; transform: scale(1); z-index: 2; }
+
+  .slide {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 22px;
+    padding: 0 20px;
+  }
+  .pic { position: relative; z-index: 1; }
+  .chibi-frame {
+    width: auto; height: auto;
+    max-width: min(230px, 46vw);
+    max-height: min(300px, 38vh);
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 16px 34px rgba(0, 0, 0, .5));
+    animation: bob 5.5s ease-in-out infinite;
+  }
+  .page.couple .chibi-frame {
+    max-width: min(560px, 92vw);
+    max-height: min(300px, 38vh);
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+    50% { transform: translateY(-12px) rotate(1.5deg); }
+  }
+  .page.chorus .chibi-frame { animation: imgPulse .7s ease, bob 5.5s ease-in-out infinite; }
+  @keyframes imgPulse {
+    0%, 100% { transform: scale(1); }
+    40% { transform: scale(1.08); }
+  }
+  .lyr { position: relative; z-index: 2; max-width: 720px; padding: 0; }
+  .k-status {
+    font-size: 11px; color: var(--gold); opacity: .95;
+    letter-spacing: .5px;
+    text-shadow: 0 1px 4px rgba(0,0,0,.6);
+  }
+  .k-lines { position: relative; line-height: 1.7; }
+  .k-line {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: clamp(22px, 4vw, 38px);
+    color: var(--cream);
+    text-shadow: 0 2px 6px rgba(0,0,0,.55), 0 0 18px rgba(0,0,0,.5), 0 0 24px rgba(255, 179, 198, .25);
+  }
+  .k-line span.typed {
+    opacity: 1;
+    color: var(--rose2);
+    text-shadow: 0 0 30px rgba(255, 179, 198, .85);
+  }
+  .caret {
+    display: inline-block; width: 3px; height: .95em;
+    background: var(--gold); margin-left: 4px;
+    vertical-align: -.08em; border-radius: 2px;
+    animation: blinkc 1s steps(1) infinite;
+    box-shadow: 0 0 10px rgba(255, 210, 127, .9);
+  }
+  @keyframes blinkc { 50% { opacity: 0; } }
+
+  .dots {
+    position: fixed; bottom: 148px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 5; flex-wrap: wrap; justify-content: center;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,.25);
+    transition: all .45s ease;
+  }
+  .dot.active {
+    background: var(--rose2); width: 22px; border-radius: 6px;
+    box-shadow: 0 0 12px rgba(255,179,198,.9);
+  }
+
+  .pop {
+    position: absolute;
+    top: 14vh; right: 7vw;
+    width: min(200px, 34vw);
+    background: linear-gradient(180deg, rgba(255,244,236,.97), rgba(255,229,215,.97));
+    padding: 10px 10px 12px;
+    border-radius: 12px;
+    box-shadow: 0 18px 45px rgba(0,0,0,.5);
+    z-index: 4;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .page:nth-child(even) .pop { right: auto; left: 7vw; }
+  .page.active .pop {
+    animation: popIn .75s cubic-bezier(.18, 1.6, .4, 1) forwards;
+  }
+  @keyframes popIn {
+    0% { transform: rotate(-10deg) scale(.2) translateY(40px); opacity: 0; }
+    60% { transform: rotate(6deg) scale(1.12); opacity: 1; }
+    100% { transform: rotate(2.5deg) scale(1); opacity: 1; }
+  }
+  .pop img {
+    width: 100%; height: 210px; object-fit: cover;
+    display: block; border-radius: 7px; background: #000;
+  }
+  .pop .cap {
+    margin-top: 10px;
+    font-family: 'Great Vibes', cursive;
+    font-size: 22px; color: #8a3b5e;
+    line-height: 1.2;
+  }
+  .pop .cap small {
+    display: block;
+    font-family: 'Poppins', sans-serif; font-style: normal;
+    font-size: 9px; letter-spacing: 2px;
+    color: #b06a86; margin-top: 2px;
+  }
+  .pop .pin {
+    position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+    width: 15px; height: 15px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ffd9e3, var(--rose));
+    box-shadow: 0 2px 6px rgba(0,0,0,.4);
+  }
+
+  .player-zone {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: 150px; z-index: 6;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .player {
+    width: min(620px, 94vw);
+    padding: 10px 16px 9px;
+    margin-bottom: 16px;
+    border-radius: 20px;
+    background: rgba(12, 5, 15, .35);
+    border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(18px) saturate(1.3);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    box-shadow: 0 12px 40px rgba(0,0,0,.3);
+    opacity: 0; pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity .45s ease, transform .45s ease;
+  }
+  body:not(.playing) .player {
+    opacity: 1; pointer-events: auto; transform: translateY(0);
+  }
+  .player-zone:hover .player {
+    opacity: 1; pointer-events: auto; transform: translateY(0);
+  }
+  .track-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .track-name {
+    font-family: 'Playfair Display', serif; font-style: italic; font-size: 17px;
+  }
+  .track-name small {
+    display: block; font-family: 'Poppins', sans-serif; font-style: normal;
+    font-size: 9.5px; letter-spacing: 1.5px; color: var(--cream); opacity: .55;
+    margin-top: 2px;
+  }
+  .eq { display: flex; align-items: flex-end; gap: 4px; height: 20px; }
+  .eq span { width: 4px; border-radius: 4px; background: linear-gradient(180deg, var(--rose2), var(--rose)); height: 40%; }
+  .eq.playing span { animation: eqbar 1s ease-in-out infinite; }
+  .eq.playing span:nth-child(1) { animation-delay: 0s; }
+  .eq.playing span:nth-child(2) { animation-delay: .18s; }
+  .eq.playing span:nth-child(3) { animation-delay: .36s; }
+  .eq.playing span:nth-child(4) { animation-delay: .09s; }
+  .eq.playing span:nth-child(5) { animation-delay: .27s; }
+  @keyframes eqbar { 0%,100% { height: 30%; } 50% { height: 100%; } }
+
+  .seek-row { display: flex; align-items: center; gap: 12px; }
+  #pp {
+    width: 44px; height: 44px; flex: none;
+    border: none; border-radius: 50%;
+    cursor: pointer;
+    background: linear-gradient(135deg, var(--rose), #ff8fa8);
+    color: #fff; font-size: 14px;
+    box-shadow: 0 6px 22px rgba(255,107,157,.5);
+    transition: transform .25s ease;
+  }
+  #pp:hover { transform: scale(1.1); }
+  input[type=range] {
+    flex: 1; -webkit-appearance: none; appearance: none;
+    height: 5px; border-radius: 5px;
+    background: rgba(255,255,255,.2);
+    outline: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 15px; height: 15px; border-radius: 50%;
+    background: var(--rose2);
+    box-shadow: 0 0 12px rgba(255,179,198,.9);
+  }
+  input[type=range]::-moz-range-thumb {
+    width: 15px; height: 15px; border: none; border-radius: 50%;
+    background: var(--rose2);
+  }
+  #time { font-size: 11.5px; color: var(--cream); opacity: .75; min-width: 84px; text-align: right; font-variant-numeric: tabular-nums; }
+
+  @media (max-width: 760px) {
+    .page { padding: 70px 16px 168px; }
+    .slide { gap: 14px; }
+    .chibi-frame { max-width: min(200px, 48vw); max-height: min(220px, 34vh); }
+    .page.couple .chibi-frame { max-width: min(420px, 92vw); max-height: min(240px, 32vh); }
+    .lyr { max-width: 94vw; }
+    .k-line { font-size: clamp(20px, 5.6vw, 27px); }
+    .k-status { font-size: 10px; }
+    .pop { top: 8vh; right: 3vw; width: min(140px, 40vw); }
+    .page:nth-child(even) .pop { left: 3vw; }
+    .pop img { height: 130px; }
+    .pop .cap { font-size: 16px; }
+    .pop .cap small { font-size: 8px; }
+    .dots { bottom: 142px; }
+    .player { width: min(560px, 96vw); margin-bottom: 10px; }
+  }
+
+  @media (max-width: 480px) {
+    .page { padding: 58px 10px 156px; }
+    .slide { gap: 10px; }
+    .chibi-frame { max-width: min(170px, 52vw); max-height: min(180px, 30vh); }
+    .page.couple .chibi-frame { max-width: min(340px, 94vw); max-height: min(200px, 28vh); }
+    .k-line { font-size: clamp(19px, 6vw, 24px); }
+    .pop { top: 6.5vh; right: 2.5vw; width: min(118px, 42vw); }
+    .page:nth-child(even) .pop { left: 2.5vw; }
+    .pop img { height: 105px; }
+    .pop .cap { font-size: 14px; margin-top: 7px; }
+    .pop .cap small { font-size: 7.5px; }
+    .track-name { font-size: 15px; }
+    #time { font-size: 10.5px; min-width: 76px; }
+    .seek-row { gap: 8px; }
+    #pp { width: 40px; height: 40px; }
+  }
+
+  @media (max-height: 560px) {
+    .page { padding: 44px 14px 132px; }
+    .slide { gap: 8px; }
+    .chibi-frame { max-height: min(150px, 28vh); }
+    .k-line { font-size: clamp(16px, 3.4vh, 20px); }
+    .pop { top: 6vh; width: min(110px, 34vw); }
+    .pop img { height: 95px; }
+    .player-zone { height: 118px; }
+    .dots { bottom: 116px; }
+  }
+</style>
+</head>
+<body class="scene-sunset">
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+  <div class="glow g3"></div>
+  <canvas id="fx"></canvas>
+
+  <div class="top">
+    <span class="logo">Hona Tha Pyaar</span>
+  </div>
+
+  <main id="pages"></main>
+
+  <div class="dots" id="dots"></div>
+
+  <div class="player-zone">
+  <div class="player">
+    <audio id="audio" src="Hona Tha Pyaar.mp3" preload="auto"></audio>
+    <div class="track-row">
+      <div class="track-name">
+        Hona Tha Pyaar
+        <small>HUA MERE YAAR · ATIF ASLAM &amp; HADiQA KIANI · BOL (2011)</small>
+      </div>
+      <div class="eq" id="eq"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+    <div class="seek-row">
+      <button id="pp" aria-label="play">♥</button>
+      <input type="range" id="seek" value="0" min="0" max="1000">
+      <span id="time">0:00 / 0:42</span>
+    </div>
+  </div>
+</div>
+
+<script>
+var IMAGES = [
+  'scene1.png', 'scene2.png', 'scene3.png', 'scene4.png',
+  'scene5.png', 'scene6.png', 'scene7.png', 'scene8.png'
+];
+
+var HAYATI = [
+  { src: 'Hayati/IMG_20250610_175352_199.jpg',  label: 'Forever',       small: 'My Love' },
+  { src: 'Hayati/IMG_20250610_175502_538.jpg',  label: 'My Heart',      small: 'Your Smile' },
+  { src: 'Hayati/IMG_20250730_103459_281.webp', label: 'Sweetheart',    small: 'Only You' },
+  { src: 'Hayati/IMG_20250730_103745_472.webp', label: 'Beloved',       small: 'Treasured' },
+  { src: 'Hayati/IMG_20250730_112315.jpg',      label: 'Soulmate',      small: 'Destiny' },
+  { src: 'Hayati/IMG_20250809_110848.jpg',      label: 'Endless Love',  small: 'Eternity' },
+  { src: 'Hayati/IMG_20250828_132238_761.png',  label: 'Dream Come True', small: 'Serendipity' },
+  { src: 'Hayati/IMG_20250901_170627.jpg',      label: 'Forever Yours', small: 'Till Eternity' }
+];
+
+var PAGES = [
+  { t: 0,    scene: 'sunset', chorus: 0, label: '01', img: 0, text: 'Tere dil ke shehar mein' },
+  { t: 4.7,  scene: 'dusk',   chorus: 0, label: '02', img: 1, couple: 1, text: 'Ghar mera ho gaya ho gaya' },
+  { t: 8.7,  scene: 'starry', chorus: 0, label: '03', img: 2, text: 'Sapna dekha jo tumne' },
+  { t: 12.8, scene: 'sunset', chorus: 0, label: '04', img: 3, text: 'Woh mera ho gaya ho gaya' },
+  { t: 17.1, scene: 'night',  chorus: 0, label: '05', img: 4, text: 'Doobe toh yun' },
+  { t: 21.3, scene: 'sunset', chorus: 0, label: '06', img: 5, text: 'Jaise ho paar' },
+  { t: 27, scene: 'rose',   chorus: 1, label: '07', img: 6, text: 'Hona tha pyaar' },
+  { t: 31, scene: 'violet', chorus: 1, label: '08', img: 7, couple: 1, text: 'hua mere yaar', textEnd: 36 }
+];
+
+var START = +localStorage.getItem('htpStart') || 0;
+var END = 0;
+
+var audio = document.getElementById('audio');
+var eq = document.getElementById('eq');
+var seek = document.getElementById('seek');
+var timeEl = document.getElementById('time');
+var pp = document.getElementById('pp');
+var dotsHost = document.getElementById('dots');
+var pagesHost = document.getElementById('pages');
+var chorusTimer = null;
+
+function fmt(s) {
+  s = Math.max(0, Math.floor(s));
+  return Math.floor(s / 60) + ':' + (s % 60 < 10 ? '0' : '') + (s % 60);
+}
+function escHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function updateChips() {
+  localStorage.setItem('htpStart', START);
+  localStorage.setItem('htpEnd', END);
+}
+
+audio.addEventListener('loadedmetadata', function () {
+  END = Math.min(36, audio.duration);
+  if (START >= END) { START = 0; }
+  updateChips();
+  timeEl.textContent = fmt(audio.currentTime) + ' / ' + fmt(END);
+});
+
+PAGES.forEach(function (p, i) {
+  p.chars = p.text.split('');
+
+  var page = document.createElement('div');
+  page.className = 'page' + (i === 0 ? ' active' : '') + (p.couple ? ' couple' : '');
+  page.id = 'page' + i;
+
+  var slide = document.createElement('div');
+  slide.className = 'slide';
+  page.appendChild(slide);
+
+  var pic = document.createElement('div');
+  pic.className = 'pic';
+  var img = document.createElement('img');
+  img.className = 'chibi-frame';
+  img.src = IMAGES[p.img];
+  img.alt = 'scene ' + p.label;
+  pic.appendChild(img);
+  slide.appendChild(pic);
+
+  var lyr = document.createElement('div');
+  lyr.className = 'lyr';
+  var status = document.createElement('div');
+  status.className = 'k-status';
+  status.textContent = 'gaana bajle lyric ta typing-er moto likhe jabe…';
+  status.id = 'status' + i;
+  lyr.appendChild(status);
+  var lines = document.createElement('div');
+  lines.className = 'k-lines';
+  var pEl = document.createElement('div');
+  pEl.className = 'k-line';
+  pEl.id = 'lines' + i;
+  lines.appendChild(pEl);
+  lyr.appendChild(lines);
+  slide.appendChild(lyr);
+  p.linesEl = pEl;
+  p.status = status;
+  p.shown = 0;
+  p.typedAny = false;
+
+  var pop = document.createElement('div');
+  pop.className = 'pop';
+  pop.id = 'pop' + i;
+  var popImg = document.createElement('img');
+  popImg.src = HAYATI[i].src;
+  popImg.alt = HAYATI[i].label;
+  pop.appendChild(popImg);
+  var popCap = document.createElement('div');
+  popCap.className = 'cap';
+  popCap.innerHTML = HAYATI[i].label + '<small>' + HAYATI[i].small + '</small>';
+  pop.appendChild(popCap);
+  var pin = document.createElement('div');
+  pin.className = 'pin';
+  pop.appendChild(pin);
+  page.appendChild(pop);
+
+  pagesHost.appendChild(page);
+
+  var dot = document.createElement('div');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  dot.id = 'dot' + i;
+  dotsHost.appendChild(dot);
+});
+
+var activePage = -1;
+renderInit(PAGES[0]);
+
+function pageForTime(t) {
+  var idx = -1;
+  for (var i = 0; i < PAGES.length; i++) { if (t >= PAGES[i].t) { idx = i; } else { break; } }
+  return idx;
+}
+
+function renderInit(p) {
+  p.linesEl.innerHTML = '<span class="caret"></span>';
+  p.shown = 0;
+  p.typedAny = false;
+}
+
+function renderText(p, n) {
+  var html = '';
+  for (var i = 0; i < n; i++) {
+    var ch = p.chars[i];
+    if (ch === '\n') { html += '<br>'; }
+    else { html += '<span class="typed">' + (ch === ' ' ? '&nbsp;' : escHtml(ch)) + '</span>'; }
+  }
+  if (n < p.chars.length) { html += '<span class="caret"></span>'; }
+  p.linesEl.innerHTML = html;
+  if (!p.typedAny && n > 0) {
+    p.typedAny = true;
+    p.status.style.display = 'none';
+  }
+}
+
+function typeNow() {
+  if (activePage < 0) { return; }
+  var p = PAGES[activePage];
+  var t = audio.currentTime;
+  var start = p.t;
+  var end = (activePage < PAGES.length - 1) ? PAGES[activePage + 1].t : (p.textEnd || END);
+  var dur = Math.max(0.001, end - start);
+  var chars = p.chars.length;
+  var pos = Math.max(0, Math.min(chars, ((t - start) / dur) * chars));
+  var n = Math.floor(pos);
+  if (n > p.shown) { p.shown = n; renderText(p, n); }
+}
+
+function typeLoop() {
+  if (activePage >= 0 && !audio.paused) { typeNow(); }
+  requestAnimationFrame(typeLoop);
+}
+typeLoop();
+
+setInterval(function () {
+  if (audio.paused && audio.currentTime < 0.01) return;
+  var t = audio.currentTime;
+  seek.value = END ? Math.min(1000, (t / END) * 1000) : 0;
+  timeEl.textContent = fmt(t) + ' / ' + fmt(END);
+  if (t >= END - 0.15) {
+    audio.pause();
+    audio.currentTime = START;
+    pp.textContent = '♥';
+    eq.classList.remove('playing');
+    document.body.classList.remove('playing');
+    seek.value = 0;
+    if (activePage >= 0) {
+      document.getElementById('page' + activePage).classList.remove('active');
+      document.getElementById('dot' + activePage).classList.remove('active');
+    }
+    activePage = -1;
+    return;
+  }
+  var idx = pageForTime(t);
+  if (idx !== activePage) {
+    if (activePage >= 0) {
+      document.getElementById('page' + activePage).classList.remove('active');
+      document.getElementById('dot' + activePage).classList.remove('active');
+    }
+    activePage = idx;
+    if (idx >= 0) {
+      var pg = PAGES[idx];
+      renderInit(pg);
+      var popEl = document.getElementById('pop' + idx);
+      if (popEl) {
+        popEl.classList.remove('show');
+        void popEl.offsetWidth;
+        popEl.classList.add('show');
+      }
+      document.getElementById('page' + idx).classList.add('active');
+      document.getElementById('dot' + idx).classList.add('active');
+      document.body.className = 'scene-' + PAGES[idx].scene;
+      if (PAGES[idx].chorus) {
+        document.getElementById('page' + idx).classList.remove('chorus');
+        void document.getElementById('page' + idx).offsetWidth;
+        document.getElementById('page' + idx).classList.add('chorus');
+        clearTimeout(chorusTimer);
+        chorusTimer = setTimeout(function () {
+          document.getElementById('page' + idx).classList.remove('chorus');
+        }, 700);
+        for (var b = 0; b < 4; b++) { spawnHeart(true); }
+      }
+    }
+  }
+}, 200);
+
+pp.addEventListener('click', function () {
+  if (audio.paused) {
+    if (audio.currentTime >= END - 0.15) { audio.currentTime = START; }
+    var playPromise = audio.play();
+    if (playPromise !== undefined && playPromise.catch) {
+      playPromise.catch(function () {
+        pp.textContent = '♥';
+        eq.classList.remove('playing');
+        document.body.classList.remove('playing');
+      });
+    }
+    pp.textContent = '❚❚';
+    eq.classList.add('playing');
+    document.body.classList.add('playing');
+  } else {
+    audio.pause();
+    pp.textContent = '♥';
+    eq.classList.remove('playing');
+    document.body.classList.remove('playing');
+  }
+});
+
+seek.addEventListener('input', function () {
+  var t = (seek.value / 1000) * END;
+  timeEl.textContent = fmt(t) + ' / ' + fmt(END);
+});
+seek.addEventListener('change', function () {
+  audio.currentTime = (seek.value / 1000) * END;
+});
+
+addEventListener('keydown', function (e) {
+  if (e.key === ' ') {
+    e.preventDefault();
+    pp.click();
+    return;
+  }
+  var t = audio.currentTime;
+  if (e.key === '[') {
+    if (t < END) { START = t; updateChips(); }
+  } else if (e.key === ']') {
+    if (t > START) { END = t; updateChips(); }
+  } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    var d = e.key === 'ArrowRight' ? 0.5 : -0.5;
+    for (var i = Math.max(0, activePage); i < PAGES.length; i++) { PAGES[i].t += d; }
+  }
+});
+
+var canvas = document.getElementById('fx');
+var ctx = canvas.getContext('2d');
+var particles = [];
+function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+resize();
+addEventListener('resize', resize);
+function makeHeart(boost) {
+  return {
+    x: Math.random() * innerWidth,
+    y: innerHeight + 30,
+    s: 7 + Math.random() * 16,
+    v: 0.35 + Math.random() * (boost ? 1.6 : 0.9),
+    o: 0.1 + Math.random() * 0.3,
+    a: Math.random() * Math.PI * 2,
+    hue: Math.random() > 0.35 ? '#ff6b9d' : '#ffd27f'
+  };
+}
+function spawnHeart(boost) {
+  var h = makeHeart(boost);
+  h.y = innerHeight * (0.55 + Math.random() * 0.45);
+  particles.push(h);
+}
+for (var h = 0; h < 18; h++) { particles.push(makeHeart(false)); }
+var butterflies = [];
+function makeButterfly(free) {
+  var fromLeft = Math.random() > 0.5;
+  return {
+    mode: free ? 1 : 0,
+    x: fromLeft ? -40 : innerWidth + 40,
+    y: free ? innerHeight * (0.05 + Math.random() * 0.9) : innerHeight * (0.3 + Math.random() * 0.4),
+    ang: fromLeft ? 0 : Math.PI,
+    target: fromLeft ? 0 : Math.PI,
+    speed: 0.5 + Math.random() * 0.8,
+    s: 8 + Math.random() * 10,
+    ph: Math.random() * Math.PI * 2,
+    sp: 0.1 + Math.random() * 0.08,
+    o: 0.45 + Math.random() * 0.35,
+    hue: ['#ff9ec7', '#ffd27f', '#c9a6ff', '#a8e6ff'][Math.floor(Math.random() * 4)]
+  };
+}
+var isMobile = innerWidth <= 760 || 'ontouchstart' in window;
+if (isMobile) { particles = particles.slice(0, 8); }
+for (var b = 0; b < (isMobile ? 3 : 7); b++) { butterflies.push(makeButterfly(false)); }
+for (var b2 = 0; b2 < (isMobile ? 2 : 5); b2++) { butterflies.push(makeButterfly(true)); }
+function drawButterfly(p) {
+  var f = Math.sin(p.ph) * 0.7;
+  ctx.save();
+  ctx.translate(p.x, p.y);
+  ctx.rotate(p.ang);
+  ctx.globalAlpha = p.o;
+  ctx.fillStyle = p.hue;
+  ctx.shadowBlur = 10;
+  ctx.shadowColor = p.hue;
+  ctx.save();
+  ctx.translate(-p.s * 0.12, -p.s * 0.1);
+  ctx.rotate(-f);
+  ctx.beginPath();
+  ctx.ellipse(-p.s * 0.38, 0, p.s * 0.42, p.s * 0.55, 0.35, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  ctx.save();
+  ctx.translate(p.s * 0.12, -p.s * 0.1);
+  ctx.rotate(f);
+  ctx.beginPath();
+  ctx.ellipse(p.s * 0.38, 0, p.s * 0.42, p.s * 0.55, -0.35, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  ctx.save();
+  ctx.translate(-p.s * 0.1, p.s * 0.18);
+  ctx.rotate(-f * 0.6);
+  ctx.beginPath();
+  ctx.ellipse(-p.s * 0.24, 0, p.s * 0.24, p.s * 0.3, 0.3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  ctx.save();
+  ctx.translate(p.s * 0.1, p.s * 0.18);
+  ctx.rotate(f * 0.6);
+  ctx.beginPath();
+  ctx.ellipse(p.s * 0.24, 0, p.s * 0.24, p.s * 0.3, -0.3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  ctx.fillStyle = 'rgba(30, 12, 40, 0.75)';
+  ctx.beginPath();
+  ctx.ellipse(0, 0, p.s * 0.07, p.s * 0.6, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+function heartPath(x, y, s) {
+  ctx.beginPath();
+  ctx.moveTo(x, y + s * 0.35);
+  ctx.bezierCurveTo(x, y, x - s * 0.5, y - s * 0.25, x - s * 0.5, y + s * 0.1);
+  ctx.bezierCurveTo(x - s * 0.5, y + s * 0.4, x, y + s * 0.55, x, y + s * 0.8);
+  ctx.bezierCurveTo(x, y + s * 0.55, x + s * 0.5, y + s * 0.4, x + s * 0.5, y + s * 0.1);
+  ctx.bezierCurveTo(x + s * 0.5, y - s * 0.25, x, y, x, y + s * 0.35);
+}
+function tickFx() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  butterflies.forEach(function (p) {
+    p.ph += p.sp;
+    p.target += (Math.random() - 0.5) * (p.mode === 1 ? 1.1 : 0.7);
+    if (p.mode === 0) {
+      var pull = Math.atan2(innerHeight / 2 - p.y, innerWidth / 2 - p.x);
+      p.target += (pull - p.ang) * 0.02;
+    }
+    p.ang += (p.target - p.ang) * 0.02;
+    p.x += Math.cos(p.ang) * p.speed;
+    p.y += Math.sin(p.ang) * p.speed + Math.sin(p.ph * 0.5) * 0.4;
+    if (p.mode === 0) {
+      if (p.y < innerHeight * 0.22 || p.y > innerHeight * 0.78) {
+        p.target = p.y < innerHeight / 2 ? Math.PI / 2 : -Math.PI / 2;
+      }
+    } else if (p.y < -60 || p.y > innerHeight + 60) {
+      p.target = p.y < innerHeight / 2 ? Math.PI / 2 : -Math.PI / 2;
+    }
+    if ((p.ang > -Math.PI / 2 && p.ang < Math.PI / 2 && p.x > innerWidth + 40) ||
+        (p.ang < -Math.PI / 2 || p.ang > Math.PI / 2) && p.x < -40) {
+      var nb = makeButterfly(p.mode === 1);
+      p.x = nb.x; p.y = nb.y; p.ang = nb.ang; p.target = nb.target; p.speed = nb.speed;
+      p.s = nb.s; p.o = nb.o; p.hue = nb.hue; p.sp = nb.sp; p.mode = nb.mode;
+    }
+    drawButterfly(p);
+  });
+  particles.forEach(function (p) {
+    p.y -= p.v;
+    p.x += Math.sin(p.a) * 0.4;
+    p.a += 0.006;
+    if (p.y < -40) { p.y = innerHeight + 40; p.x = Math.random() * innerWidth; }
+    ctx.save();
+    ctx.globalAlpha = p.o;
+    ctx.fillStyle = p.hue;
+    ctx.shadowBlur = 14;
+    ctx.shadowColor = p.hue;
+    heartPath(p.x, p.y, p.s);
+    ctx.fill();
+    ctx.restore();
+  });
+  requestAnimationFrame(tickFx);
+}
+tickFx();
+</script>
+</body>
+</html>
